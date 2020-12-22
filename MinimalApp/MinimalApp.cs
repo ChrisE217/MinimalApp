@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Primitives;
+using Microsoft.AspNetCore.HttpOverrides;
 
 await Host.CreateDefaultBuilder(args)
     .ConfigureWebHostDefaults(webBuilder =>
@@ -34,6 +35,11 @@ await Host.CreateDefaultBuilder(args)
                     context.Response.StatusCode = 200;
                     context.Response.Redirect("/");
                 });
+            });
+
+            _.UseForwardedHeaders(new ForwardedHeadersOptions 
+            { 
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto 
             });
         });
     }).Build().RunAsync();
