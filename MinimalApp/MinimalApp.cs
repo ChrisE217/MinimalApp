@@ -7,9 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Primitives;
 
-await CreateHostBuilder(args).Build().RunAsync();
-
-static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
+await Host.CreateDefaultBuilder(args)
     .ConfigureWebHostDefaults(webBuilder =>
     {
         webBuilder.Configure(_ => 
@@ -38,7 +36,7 @@ static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilde
                 });
             });
         });
-    });
+    }).Build().RunAsync();
     
 class MinimalAppDbContext : DbContext
 {
