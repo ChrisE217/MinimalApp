@@ -38,6 +38,7 @@ jobs:
           port: ${{ secrets.PORT }}
           source: "/home/runner/work/MinimalApp/MinimalApp/deploy"
           target: "${{ secrets.SERVER_DIRECTORY }}"
+          overwrite: true
   commands:
     needs: [publish_and_copy]
     runs-on: ubuntu-latest
