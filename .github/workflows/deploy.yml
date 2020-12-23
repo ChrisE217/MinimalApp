@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: "/home/runner/work/MinimalApp/MinimalApp/deploy"
+          source: "/home/runner/work/MinimalApp/MinimalApp/deploy/github/workspace/deploy"
           target: "${{ secrets.SERVER_DIRECTORY }}"
   commands:
     needs: [publish_and_copy]
