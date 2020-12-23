@@ -19,6 +19,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal
       
   publish:
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -30,6 +31,7 @@ jobs:
         run: dotnet publish --configuration release --output deploy
         
   copy:
+    needs: [publish]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
@@ -40,9 +42,10 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: "/home/runner/work/minimalapp/minimalapp/deploy/"
+          source: "/home/runner/work/MinimalApp/MinimalApp/deploy/"
           target: "${{ secrets.SERVER_DIRECTORY}}"
   commands:
+    needs: [copy]
     runs-on: ubunutu-latest
     steps:
       - name: SSH Remote Commands
