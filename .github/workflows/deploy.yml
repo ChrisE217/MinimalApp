@@ -18,7 +18,7 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
       
-  publish&copy:
+  publish_and_copy:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
@@ -39,7 +39,7 @@ jobs:
           source: "/home/runner/work/MinimalApp/MinimalApp/deploy/"
           target: "${{ secrets.SERVER_DIRECTORY}}"
   commands:
-    needs: [publish&copy]
+    needs: [publish_and_copy]
     runs-on: ubunutu-latest
     steps:
       - name: SSH Remote Commands
