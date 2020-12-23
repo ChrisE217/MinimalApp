@@ -36,8 +36,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          source: "/home/runner/work/MinimalApp/MinimalApp/deploy/"
-          target: "${{ secrets.SERVER_DIRECTORY}}"
+          source: "/home/runner/work/MinimalApp/MinimalApp/deploy"
+          target: "${{ secrets.SERVER_DIRECTORY }}"
   commands:
     needs: [publish_and_copy]
     runs-on: ubunutu-latest
