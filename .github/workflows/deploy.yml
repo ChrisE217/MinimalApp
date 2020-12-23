@@ -45,8 +45,8 @@ jobs:
   commands:
     runs-on: ubunutu-latest
     steps:
-      - uses: appleboy/ssh-action@v0.1.4
       - name: SSH Remote Commands
+        uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
