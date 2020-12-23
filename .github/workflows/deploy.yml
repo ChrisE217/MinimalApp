@@ -1,6 +1,10 @@
 name: Deploy
 
-on: [workflow_dispatch]
+on: 
+  pull_request:
+    branches: master
+  push:
+    branches: master
 
 jobs:
   build:
@@ -13,13 +17,23 @@ jobs:
         dotnet-version: 5.0.x
     - name: Restore dependencies
       run: dotnet restore
-    - name: Build
+    - name: Run dotnet build
       run: dotnet build --no-restore --configuration release 
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
-      
-  publish_and_copy:
+  
+  test:
     needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Run dotnet test
+      run: dotnet test --no-build --verbosity normal  
+  
+  publish_and_copy:
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -27,9 +41,9 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
-      - name: Publish
+      - name: Run dotnet publish
         run: dotnet publish --configuration release --output deploy
-      - name: copy file via ssh password
+      - name: Copy published files to server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -40,11 +54,11 @@ jobs:
           target: "${{ secrets.SERVER_DIRECTORY }}"
           overwrite: true
           rm: true
-  commands:
+  server_commands:
     needs: [publish_and_copy]
     runs-on: ubuntu-latest
     steps:
-      - name: SSH Remote Commands
+      - name: Restart kestrel service on server
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.HOST }}
