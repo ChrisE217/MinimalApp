@@ -40,7 +40,7 @@ jobs:
           target: "${{ secrets.SERVER_DIRECTORY }}"
   commands:
     needs: [publish_and_copy]
-    runs-on: ubunutu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.4
@@ -49,4 +49,4 @@ jobs:
           port: ${{ secrets.PORT }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: sudo systemctl start kestrel-minimalapp.service
+          script: sudo systemctl restart kestrel-minimalapp.service
